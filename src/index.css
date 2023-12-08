@@ -1,0 +1,7 @@
+html {
+  background-color: #e8f1fe;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
