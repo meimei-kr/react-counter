@@ -1,6 +1,25 @@
-import { useState } from 'react'
+import { useReducer } from 'react'
 import { css } from '@emotion/react'
 import Button from './components/Button'
+
+type State = {
+  count: number
+}
+
+type Action = { type: "increment" } | { type: "decrement" }
+
+function reducer(state: State, action: Action): State {
+  switch (action.type) {
+    case "increment":
+      return { count: state.count + 1 }
+    case "decrement":
+      return { count: state.count - 1 }
+    default:
+      throw new Error()
+  }
+}
+
+const initialState: State = { count: 0 }
 
 const App = () => {
   const containerStyle = css`
@@ -30,18 +49,15 @@ const App = () => {
     color: #1f5ace;
   `
 
-  const [count, setCount] = useState(0)
-
-  const handleCountUp = () => (setCount((prev) => prev + 1))
-  const handleCountDown = () => (setCount((prev) => prev - 1))
+  const [state, dispatch] = useReducer(reducer, initialState)
 
   return (
     <div css={containerStyle}>
       <h1 css={h1Style}>React Counter</h1>
-      <p css={pStyle}>{count}</p>
+      <p css={pStyle}>{state.count}</p>
       <div css={buttonGroupStyle}>
-        <Button onClick={handleCountUp} backgroundColor="#1f5ace" color="#fff" border="none">+</Button>
-        <Button onClick={handleCountDown} backgroundColor="#fff" color="#1f5ace" border="#1f5ace solid 1px">-</Button>
+        <Button onClick={() => dispatch({ type: "increment" })} backgroundColor="#1f5ace" color="#fff" border="none">+</Button>
+        <Button onClick={() => dispatch({ type: "decrement" })} backgroundColor="#fff" color="#1f5ace" border="#1f5ace solid 1px">-</Button>
       </div>
     </div>
   );
